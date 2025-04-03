@@ -1,6 +1,5 @@
 - 👋 Hi, I’m Julio Berroa
-- 👀 I’m a Cyber Security Engineer loading up on Web3 & Blockchain Technology 
-- 💞️ I’m looking to collaborate on Web3, Javascrypt, Solidity 
+- 👀 I’m a Cyber Security & Network Engineer  with specialty in DDoS
 - 📫 How to reach me @ Jberroa0204@gmail.com
 
 <!---
