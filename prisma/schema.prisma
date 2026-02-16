@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Priority {
+  Critical
+  High
+  Medium
+  Low
+}
+
+enum RiskLevel {
+  Low
+  Medium
+  High
+}
+
+enum TriageOutcome {
+  NOT_AI_NO_SCREENING_NEEDED
+  REQUIRES_MORE_INFORMATION
+  READY_FOR_SCREENING
+}
+
+model Submission {
+  id                           String        @id @default(cuid())
+  createdAt                    DateTime      @default(now())
+  updatedAt                    DateTime      @updatedAt
+  requestDate                  DateTime
+  requestorName                String
+  requestorRoleTeam            String
+  sponsorApprover              String
+  projectName                  String
+  priority                     Priority
+  systemWhatDoesItDo           String
+  aiAutomationType             Json
+  aiAutomationTypeOther        String?
+  vendorModelPlatform          String?
+  deploymentModel              String
+  endUsers                     String
+  dataIngested                 String?
+  outputsProduced              String?
+  dataSensitivity              String
+  impactIfFails                String
+  humanOversight               String?
+  biasFairnessRisks            String
+  thirdPartyVendorRisk         String
+  accessControls               String
+  loggingMonitoring            String?
+  incidentResponsePlan         String
+  rollbackPlan                 String?
+  dataRetentionDisposal        String
+  testingValidationDone        String
+  legalComplianceReviewRequired String
+  isAIConfirmed                Boolean
+  riskScore                    Int
+  riskLevel                    RiskLevel
+  triageOutcome                TriageOutcome
+  routingRecommendation        Json
+  conditionsInfoNeeded         Json
+  requiredControlsChecklist    Json
+}
