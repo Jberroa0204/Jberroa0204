@@ -3,9 +3,9 @@ import { Card } from "@/components/ui/card";
 export default function RulesPage() {
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Scoring Rubric (Read-only)</h1>
+      <h1 className="text-2xl font-bold text-primary-ink">Scoring Rubric (Read-only)</h1>
       <Card>
-        <ul className="list-inside list-disc space-y-1 text-sm">
+        <ul className="list-inside list-disc space-y-1 text-sm text-primary-ink">
           <li>Data Sensitivity: Public 5, Internal 15, PII/PHI/PCI 30, Classified 40.</li>
           <li>Impact: Minor 5, Operational 15, Financial 25, Safety 35, Regulatory 30.</li>
           <li>Oversight: In-loop 5, On-loop 15, Out-loop 30.</li>

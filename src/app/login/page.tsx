@@ -13,7 +13,11 @@ export default function LoginPage() {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await fetch("/api/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ password }) });
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ password })
+    });
     if (!res.ok) {
       setError("Invalid password");
       return;
@@ -22,12 +26,12 @@ export default function LoginPage() {
   };
 
   return (
-    <Card className="mx-auto max-w-md">
-      <h1 className="mb-2 text-xl font-semibold">Demo Access</h1>
-      <p className="mb-6 text-sm text-slate-600">Enter the shared demo password to continue.</p>
+    <Card className="mx-auto max-w-md border-t-4 border-t-primary">
+      <h1 className="mb-2 text-xl font-bold text-primary-ink">NeoXFortress Internal Demo Access</h1>
+      <p className="mb-6 text-sm text-slate-600">Enter the approved shared password to access AI intake workflows.</p>
       <form onSubmit={submit} className="space-y-3">
-        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        {error && <p className="text-sm text-red-700">{error}</p>}
+        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Demo password" />
+        {error && <p className="text-sm text-destructive">{error}</p>}
         <Button type="submit" className="w-full">Sign in</Button>
       </form>
     </Card>

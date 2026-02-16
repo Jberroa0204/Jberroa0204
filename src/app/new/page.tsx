@@ -7,9 +7,11 @@ export default async function NewPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold">NeoXFortress AI Intake + Risk Triage</h1>
-        <p className="text-sm text-slate-600">Structured intake aligned to NIST AI RMF: Govern, Map, Measure, Manage.</p>
+      <header className="space-y-2">
+        <h1 className="text-2xl font-bold text-primary-ink">NeoXFortress AI Intake + Risk Triage</h1>
+        <p className="text-sm text-slate-600">
+          Governance intake aligned with NIST AI RMF domains: Govern, Map, Measure, and Manage.
+        </p>
       </header>
       <IntakeWizard />
     </div>

@@ -7,12 +7,31 @@ body {
 }
 
 @media print {
-  nav, .no-print {
+  @page {
+    margin: 0.55in;
+  }
+
+  nav,
+  .no-print {
     display: none !important;
   }
-  .print-full {
-    width: 100%;
+
+  body {
+    background: #ffffff !important;
+  }
+
+  .print-memo {
     box-shadow: none !important;
-    border: none !important;
+    border: 1px solid #d9e2ec !important;
+    padding: 1rem !important;
+  }
+
+  .print-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #d9e2ec;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
   }
 }
