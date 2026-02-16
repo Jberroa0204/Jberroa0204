@@ -66,8 +66,7 @@ const baseRecords: SubmissionInput[] = [
   },
 ];
 
-// Convert string outputs from scoring logic into Prisma enum types.
-// This fixes Vercel TypeScript compile errors during `vercel-build`.
+// Map computed string outputs into Prisma enum types (required for TS build on Vercel).
 const riskMap: Record<string, Prisma.RiskLevel> = {
   Low: Prisma.RiskLevel.Low,
   Medium: Prisma.RiskLevel.Medium,
@@ -80,38 +79,39 @@ const triageMap: Record<string, Prisma.TriageOutcome> = {
   READY_FOR_SCREENING: Prisma.TriageOutcome.READY_FOR_SCREENING,
 };
 
+function toDate(d: string | Date): Date {
+  return d instanceof Date ? d : new Date(d);
+}
+
 async function main() {
-  // wipe table for deterministic seed
   await prisma.submission.deleteMany();
 
   for (const record of baseRecords) {
     const computed = computeSubmissionOutputs(record);
 
-    // computed fields from scoring.ts are strongly typed in-app, but when we spread
-    // into Prisma create() during a TS build, riskLevel/triageOutcome can be treated
-    // as string unions. Map them explicitly to Prisma enums to satisfy Prisma types.
     const mappedRisk =
       riskMap[String((computed as unknown as { riskLevel: string }).riskLevel)] ??
       Prisma.RiskLevel.Medium;
 
     const mappedTriage =
       triageMap[
-        String(
-          (computed as unknown as { triageOutcome: string }).triageOutcome
-        )
+        String((computed as unknown as { triageOutcome: string }).triageOutcome)
       ] ?? Prisma.TriageOutcome.REQUIRES_MORE_INFORMATION;
 
-    await prisma.submission.create({
-      data: {
-        ...record,
-        ...computed,
-        // enforce Prisma enum types
-        riskLevel: mappedRisk,
-        triageOutcome: mappedTriage,
-        // priority is already Prisma enum (Priority.*) in baseRecords
-        priority: record.priority,
-      },
-    });
+    // Build the payload explicitly so TS cannot infer riskLevel/triageOutcome as strings
+    // and so requestDate always matches Prisma DateTime type.
+    const data: Prisma.SubmissionCreateInput = {
+      ...(record as unknown as Prisma.SubmissionCreateInput),
+      ...(computed as unknown as Prisma.SubmissionCreateInput),
+
+      // hard overrides AFTER spreads (order matters)
+      requestDate: toDate(record.requestDate),
+      riskLevel: mappedRisk,
+      triageOutcome: mappedTriage,
+      priority: record.priority,
+    };
+
+    await prisma.submission.create({ data });
   }
 }
 
